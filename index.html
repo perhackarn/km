@@ -815,7 +815,7 @@
 
       // Kolumnrubriker
       const headers = [
-        ["Plats", "Skytt", "Ort", ...allStations.map(st => "St " + st), ...skiljemalStationer.map((st, i) => `Skilje ${i+1}`), "Summa"]
+        ["Plats", "Skytt", "Ort", ...allStations.map(st => "Serie " + st), ...skiljemalStationer.map((st, i) => `Skilje ${i+1}`), "Summa"]
       ];
 
       doc.autoTable({
@@ -882,7 +882,7 @@
                   <th className="p-3 text-left font-medium text-primary-800">Skytt</th>
                   <th className="p-3 text-left font-medium text-primary-800">Ort</th>
                   {allStations.map(station => (
-                    <th className="p-3 text-left font-medium text-primary-800" key={station}>St {station}</th>
+                    <th className="p-3 text-left font-medium text-primary-800" key={station}>Serie {station}</th>
                   ))}
 
 
