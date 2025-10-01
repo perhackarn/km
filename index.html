@@ -703,7 +703,7 @@
         ))}
       </div>
       <div className="text-lg font-semibold text-primary-800 mb-6 text-center bg-white p-4 rounded-lg border border-primary-200">
-        Summa: <span className="text-primary-700">{shots.reduce((a, b) => a + b.value, 0)} poäng</span>, 5¹/10¹or: <span className="text-primary-700">{shots.filter(s => s.femetta && (s.value === 5 || s.value === 10)).length}</span>
+        Summa: <span className="text-primary-700">{shots.reduce((a, b) => a + b.value, 0)} poäng</span>
       </div>
       <div className="text-center">
         <button onClick={saveScore}
