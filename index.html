@@ -744,14 +744,7 @@
     const stationFemettors = {};
     shooterScores.forEach(sc => {
       stationTotals[sc.station] = (stationTotals[sc.station] || 0) + sc.total;
-      // Räkna femettor i denna station
-      const femettor = sc.shots ? sc.shots.filter(shot => shot.femetta && (shot.value === 5 || shot.value === 10)).length : (sc.femettor || 0);
-      stationFemettors[sc.station] = (stationFemettors[sc.station] || 0) + femettor;
-    });
-    const total = Object.values(stationTotals).reduce((a, b) => a + b, 0);
-    if (!grouped[s.klass]) grouped[s.klass] = [];
-    grouped[s.klass].push({ ...s, total, stationTotals, stationFemettors });
-  });
+      
 
    // PDF-export med jsPDF-autotable
   const exportPDF = () => {
@@ -788,7 +781,7 @@
 
       // Kolumnrubriker
       const headers = [
-        ["Plats", "Skytt", "Ort", ...allStations.map(st => "Serie " + st), ...skiljemalStationer.map((st, i) => `Skilje ${i+1}`), "Summa"]
+        ["Plats", "Skytt", "Ort", ...allStations.map(st => "Serie " + st),"Summa"]
       ];
 
       doc.autoTable({
@@ -859,11 +852,6 @@
                   ))}
 
 
-{skiljemalStationer.map((station, idx) => (
-  <th className="p-3 text-left font-medium text-primary-800" key={"skilje" + station}>
-    Skilje {idx+1}
-  </th>
-))}
 
 
 
