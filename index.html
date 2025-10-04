@@ -349,7 +349,7 @@
                 className="border border-primary-300 p-3 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors" />
             </div>
             <div className="flex items-center pb-3">
-              <input id="includeInCup" type="checkbox" checked={includeInCup} onChange={e => setIncludeInCup(e.target.checked)} className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"/>
+              <input id="includeInCup" type="checkbox" checked={includeInCup} onChange={e => setIncludeInCup(e.target.checked)} className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-p[...]
               <label htmlFor="includeInCup" className="ml-2 text-sm text-primary-800">Ingår i KM</label>
             </div>
             <button onClick={addCompetition}
@@ -365,11 +365,11 @@
                     <input value={editName} onChange={e=>setEditName(e.target.value)} className="border border-primary-300 p-2 rounded-lg flex-1 mb-2 md:mb-0"/>
                     <input type="date" value={editDate} onChange={e=>setEditDate(e.target.value)} className="border border-primary-300 p-2 rounded-lg flex-1 mb-2 md:mb-0"/>
                     <div className="flex items-center">
-                      <input id={`editInclude-${c.id}`} type="checkbox" checked={editIncludeInCup} onChange={e => setEditIncludeInCup(e.target.checked)} className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"/>
+                      <input id={`editInclude-${c.id}`} type="checkbox" checked={editIncludeInCup} onChange={e => setEditIncludeInCup(e.target.checked)} className="h-4 w-4 rounded border-gray-300 text[...]
                       <label htmlFor={`editInclude-${c.id}`} className="ml-2 text-sm text-primary-800">Ingår i KM</label>
                     </div>
                     <div className="flex gap-2">
-                      <button onClick={saveEdit} disabled={!user} className={`bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor-not-allowed" : ""}`}>Spara</button>
+                      <button onClick={saveEdit} disabled={!user} className={`bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor[...]
                       <button onClick={cancelEdit} className="bg-primary-200 hover:bg-primary-300 text-primary-700 px-3 py-2 rounded-lg font-medium transition-colors">Avbryt</button>
                     </div>
                   </>
@@ -381,8 +381,8 @@
                       {c.includeInCup ? 'KM' : 'Ej KM'}
                     </span>
                     <div className="flex gap-2">
-                      <button onClick={()=>startEdit(c)} disabled={!user} className={`bg-primary-100 hover:bg-primary-200 text-primary-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor-not-allowed" : ""}`}>Ändra</button>
-                      <button onClick={()=>removeCompetition(c.id)} disabled={!user} className={`bg-red-100 hover:bg-red-200 text-red-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor-not-allowed" : ""}`}>Ta bort</button>
+                      <button onClick={()=>startEdit(c)} disabled={!user} className={`bg-primary-100 hover:bg-primary-200 text-primary-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? [...]
+                      <button onClick={()=>removeCompetition(c.id)} disabled={!user} className={`bg-red-100 hover:bg-red-200 text-red-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "[...]
                     </div>
                   </>
                 )}
@@ -482,7 +482,7 @@
                 Namn: {confirmation.name}, Startnummer: {confirmation.startNumber}
               </span>
               <button onClick={() => setConfirmation(null)} className="absolute top-0 bottom-0 right-0 px-4 py-3">
-                <svg className="fill-current h-6 w-6 text-green-600" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 1.697l-2.651-2.65-2.651 2.65a1.2 1.2 0 1 1-1.697-1.697L10 11.65l-2.651-2.65a1.2 1.2 0 1 1 1.697-1.697L11.65 10l2.697-2.651a1.2 1.2 0 1 1 1.697 1.697L13.348 10l2.651 2.65z"/></svg>
+                <svg className="fill-current h-6 w-6 text-green-600" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.69[...]
               </button>
             </div>
           )}
@@ -491,7 +491,7 @@
               className="border border-primary-300 p-3 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"/>
             <input value={club} onChange={e=>setClub(e.target.value)} placeholder="Ort"
               className="border border-primary-300 p-3 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"/>
-            <select value={klass} onChange={e=>setKlass(e.target.value)} className="border border-primary-300 p-3 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors">
+            <select value={klass} onChange={e=>setKlass(e.target.value)} className="border border-primary-300 p-3 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-col[...]
               <option>öppen</option>
               <option>dam</option>
               <option>veteran</option>
@@ -519,7 +519,7 @@
                       <option>junior med stöd</option>
                     </select>
                     <div className="flex gap-2">
-                      <button onClick={saveEdit} disabled={!user} className={`bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor-not-allowed" : ""}`}>Spara</button>
+                      <button onClick={saveEdit} disabled={!user} className={`bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor[...]
                       <button onClick={cancelEdit} className="bg-primary-200 hover:bg-primary-300 text-primary-700 px-3 py-2 rounded-lg font-medium transition-colors">Avbryt</button>
                     </div>
                   </>
@@ -529,8 +529,8 @@
                     <span className="flex-1 font-medium text-primary-800">{s.name} <span className="text-primary-600 font-normal">({s.club})</span></span>
                     <span className="bg-primary-200 text-primary-800 px-3 py-1 rounded-full text-sm font-medium">{s.klass}</span>
                     <div className="flex gap-2">
-                      <button onClick={()=>startEdit(s)} disabled={!user} className={`bg-primary-100 hover:bg-primary-200 text-primary-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor-not-allowed" : ""}`}>Ändra</button>
-                      <button onClick={()=>removeShooter(s.id)} disabled={!user} className={`bg-red-100 hover:bg-red-200 text-red-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor-not-allowed" : ""}`}>Ta bort</button>
+                      <button onClick={()=>startEdit(s)} disabled={!user} className={`bg-primary-100 hover:bg-primary-200 text-primary-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? [...]
+                      <button onClick={()=>removeShooter(s.id)} disabled={!user} className={`bg-red-100 hover:bg-red-200 text-red-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opac[...]
                     </div>
                   </>
                 )}
@@ -597,7 +597,7 @@
           <div className="flex flex-col md:flex-row gap-4 mb-6">
             <div className="flex-1">
               <label className="block text-sm font-medium text-primary-700 mb-2">Tävling:</label>
-              <select value={competitionId} onChange={e => setCompetitionId(e.target.value)} className="border border-primary-300 p-3 rounded-lg w-full focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors">
+              <select value={competitionId} onChange={e => setCompetitionId(e.target.value)} className="border border-primary-300 p-3 rounded-lg w-full focus:ring-2 focus:ring-primary-500 focus:border[...]
                 <option value="">Välj tävling</option>
                 {competitions.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
               </select>
@@ -892,22 +892,19 @@
         const placings = cupCompetitionIds.map(compId => {
           const klassPlacings = placementsPerCompetition[compId]?.[s.klass] || [];
           const p = klassPlacings.find(ss => ss.shooterId === s.id);
-          return p ? p.placering : null; // Använd null för ej deltagit
+          return p ? p.placering : 1000; // Använd 1000 för ej deltagit
         });
 
-        // Summera alla placeringar (ignorera null)
-        const sumPlacings = placings.reduce((a, b) => a + (b || 0), 0);
+        // Summera alla placeringar
+        const sumPlacings = placings.reduce((a, b) => a + b, 0);
         
-        // Räkna endast med skyttar som deltagit i minst en cuptävling
-        if (placings.some(p => p !== null)) {
-            const skyttObj = {
-              ...s,
-              placings,
-              sumPlacings
-            };
-            if (!grouped[s.klass]) grouped[s.klass] = [];
-            grouped[s.klass].push(skyttObj);
-        }
+        const skyttObj = {
+          ...s,
+          placings,
+          sumPlacings
+        };
+        if (!grouped[s.klass]) grouped[s.klass] = [];
+        grouped[s.klass].push(skyttObj);
       });
 
       // Sortera skyttar per klass
@@ -951,7 +948,7 @@
                           <td className="p-3 font-medium text-primary-800">{s.name}</td>
                           <td className="p-3 text-primary-600">{s.club}</td>
                           {s.placings.map((p, idx) => (
-                            <td className="p-3 font-mono text-primary-700" key={idx}>{p === null ? "-" : p}</td>
+                            <td className="p-3 font-mono text-primary-700" key={idx}>{p === 1000 ? "-" : p}</td>
                           ))}
                           <td className="p-3 font-bold text-primary-800">{s.sumPlacings}</td>
                         </tr>
