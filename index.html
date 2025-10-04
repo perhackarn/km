@@ -45,7 +45,7 @@
   <header class="w-full py-4 bg-primary-800 shadow-sm sticky top-0 z-10 border-b border-primary-700">
     <div class="max-w-6xl mx-auto px-4 flex justify-between items-center">
       <h1 class="text-lg md:text-2xl font-semibold text-white tracking-tight flex items-center gap-2 md:gap-3">
-        <svg class="w-7 h-7 md:w-8 md:h-8 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-7 h-7 md:w-8 md:h-8 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <circle cx="12" cy="12" r="10"/>
           <circle cx="12" cy="12" r="6"/>
           <circle cx="12" cy="12" r="2"/>
@@ -72,6 +72,13 @@
     <div id="app"></div>
   </main>
 
+  <!--
+    KORRIGERING 1: Flyttade React-skriptet sist och la till 'defer'.
+    Ditt React-skript (`text/babel`) behöver tillgång till `window.firestore` och `window.firebaseAuth`
+    som sätts av Firebase-skriptet (`type="module"`). Genom att flytta React-skriptet sist
+    och använda 'defer' säkerställer vi att Firebase-skriptet har körts och att `window`-objekten
+    är tillgängliga när React-appen försöker använda dem.
+  -->
   <!-- Firebase + auth -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
@@ -86,20 +93,22 @@
       signInWithEmailAndPassword
     } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
 
+    // KORRIGERING 2: Ersatt med en platshållare. Dela aldrig din riktiga API-nyckel publikt.
+    // Du bör byta ut denna mot din riktiga konfiguration och skydda den, t.ex. med Firebase App Check.
     const firebaseConfig = {
-      apiKey: "AIzaSyB0C2ecPKLnbIMzWuj9LHcZa_fa9c47GzM",
-      authDomain: "landbys-cup-2288f.firebaseapp.com",
-      projectId: "landbys-cup-2288f",
-      storageBucket: "landbys-cup-2288f.appspot.com",
-      messagingSenderId: "1088737380353",
-      appId: "1:1088737380353:web:7f3d4c3f5b6b8b1e4e5e6e"
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
     };
 
     const app = initializeApp(firebaseConfig);
-    export const db = getFirestore(app);
-    export const auth = getAuth(app);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
 
-    export async function loginWithEmail(email, password) {
+    async function loginWithEmail(email, password) {
       try {
         await signInWithEmailAndPassword(auth, email, password);
       } catch (error) {
@@ -156,7 +165,7 @@
   </script>
 
   <!-- Din app -->
-  <script type="text/babel">
+  <script type="text/babel" defer>
     const { db, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy, runTransaction } = window.firestore;
 
     // SVG Icon Components
@@ -214,13 +223,6 @@
       React.useEffect(() => {
         const unsub = window.firebaseAuth.auth.onAuthStateChanged(user => {
             setUser(user);
-            // Hide login box based on user state, but keep app content visible
-            const loginContainer = document.getElementById("login-box");
-            if (user) {
-                loginContainer.classList.add("hidden");
-            } else {
-                loginContainer.classList.remove("hidden");
-            }
         });
         return () => unsub && unsub();
       }, []);
@@ -236,21 +238,24 @@
 
       React.useEffect(() => {
         const q = query(collection(db, "competitions"), orderBy("date"));
-        return onSnapshot(q, (snapshot) => {
+        const unsub = onSnapshot(q, (snapshot) => {
           setCompetitions(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
         });
+        return () => unsub();
       }, []);
       React.useEffect(() => {
         const q = query(collection(db, "shooters"), orderBy("startNumber"));
-        return onSnapshot(q, (snapshot) => {
+        const unsub = onSnapshot(q, (snapshot) => {
           setShooters(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
         });
+        return () => unsub();
       }, []);
       React.useEffect(() => {
         const q = query(collection(db, "scores"));
-        return onSnapshot(q, (snapshot) => {
+        const unsub = onSnapshot(q, (snapshot) => {
           setScores(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
         });
+        return () => unsub();
       }, []);
 
       return (
@@ -279,8 +284,8 @@
       return (
         <button
           className={`flex-1 min-w-[140px] px-4 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all duration-200 border ${
-            active 
-              ? "bg-primary-700 text-white border-primary-700 shadow-sm" 
+            active
+              ? "bg-primary-700 text-white border-primary-700 shadow-sm"
               : "bg-primary-50 text-primary-700 border-primary-200 hover:bg-primary-100 hover:border-primary-300"
           }`}
           onClick={onClick}>
@@ -349,7 +354,7 @@
                 className="border border-primary-300 p-3 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors" />
             </div>
             <div className="flex items-center pb-3">
-              <input id="includeInCup" type="checkbox" checked={includeInCup} onChange={e => setIncludeInCup(e.target.checked)} className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-p[...]
+              <input id="includeInCup" type="checkbox" checked={includeInCup} onChange={e => setIncludeInCup(e.target.checked)} className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-600" />
               <label htmlFor="includeInCup" className="ml-2 text-sm text-primary-800">Ingår i KM</label>
             </div>
             <button onClick={addCompetition}
@@ -365,11 +370,11 @@
                     <input value={editName} onChange={e=>setEditName(e.target.value)} className="border border-primary-300 p-2 rounded-lg flex-1 mb-2 md:mb-0"/>
                     <input type="date" value={editDate} onChange={e=>setEditDate(e.target.value)} className="border border-primary-300 p-2 rounded-lg flex-1 mb-2 md:mb-0"/>
                     <div className="flex items-center">
-                      <input id={`editInclude-${c.id}`} type="checkbox" checked={editIncludeInCup} onChange={e => setEditIncludeInCup(e.target.checked)} className="h-4 w-4 rounded border-gray-300 text[...]
+                      <input id={`editInclude-${c.id}`} type="checkbox" checked={editIncludeInCup} onChange={e => setEditIncludeInCup(e.target.checked)} className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-600" />
                       <label htmlFor={`editInclude-${c.id}`} className="ml-2 text-sm text-primary-800">Ingår i KM</label>
                     </div>
                     <div className="flex gap-2">
-                      <button onClick={saveEdit} disabled={!user} className={`bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor[...]
+                      <button onClick={saveEdit} disabled={!user} className={`bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor-not-allowed" : ""}`}>Spara</button>
                       <button onClick={cancelEdit} className="bg-primary-200 hover:bg-primary-300 text-primary-700 px-3 py-2 rounded-lg font-medium transition-colors">Avbryt</button>
                     </div>
                   </>
@@ -381,8 +386,8 @@
                       {c.includeInCup ? 'KM' : 'Ej KM'}
                     </span>
                     <div className="flex gap-2">
-                      <button onClick={()=>startEdit(c)} disabled={!user} className={`bg-primary-100 hover:bg-primary-200 text-primary-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? [...]
-                      <button onClick={()=>removeCompetition(c.id)} disabled={!user} className={`bg-red-100 hover:bg-red-200 text-red-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "[...]
+                      <button onClick={()=>startEdit(c)} disabled={!user} className={`bg-primary-100 hover:bg-primary-200 text-primary-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor-not-allowed" : ""}`}>Ändra</button>
+                      <button onClick={()=>removeCompetition(c.id)} disabled={!user} className={`bg-red-100 hover:bg-red-200 text-red-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor-not-allowed" : ""}`}>Ta bort</button>
                     </div>
                   </>
                 )}
@@ -427,9 +432,9 @@
             }
 
             newStartNumber = counterDoc.data().currentNumber + 1;
-            
+
             const newShooterRef = doc(collection(db, "shooters"));
-            
+
             transaction.set(newShooterRef, { name: shooterName, club, klass, startNumber: newStartNumber });
             transaction.update(counterRef, { currentNumber: newStartNumber });
           });
@@ -437,7 +442,7 @@
           setConfirmation({ name: shooterName, startNumber: newStartNumber });
           setTimeout(() => setConfirmation(null), 5000);
 
-          setName(""); 
+          setName("");
           setClub("");
         } catch (e) {
           console.error("Transaction failed: ", e);
@@ -482,7 +487,7 @@
                 Namn: {confirmation.name}, Startnummer: {confirmation.startNumber}
               </span>
               <button onClick={() => setConfirmation(null)} className="absolute top-0 bottom-0 right-0 px-4 py-3">
-                <svg className="fill-current h-6 w-6 text-green-600" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.69[...]
+                <svg className="fill-current h-6 w-6 text-green-600" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
               </button>
             </div>
           )}
@@ -491,7 +496,7 @@
               className="border border-primary-300 p-3 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"/>
             <input value={club} onChange={e=>setClub(e.target.value)} placeholder="Ort"
               className="border border-primary-300 p-3 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"/>
-            <select value={klass} onChange={e=>setKlass(e.target.value)} className="border border-primary-300 p-3 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-col[...]
+            <select value={klass} onChange={e=>setKlass(e.target.value)} className="border border-primary-300 p-3 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors">
               <option>öppen</option>
               <option>dam</option>
               <option>veteran</option>
@@ -519,7 +524,7 @@
                       <option>junior med stöd</option>
                     </select>
                     <div className="flex gap-2">
-                      <button onClick={saveEdit} disabled={!user} className={`bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor[...]
+                      <button onClick={saveEdit} disabled={!user} className={`bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor-not-allowed" : ""}`}>Spara</button>
                       <button onClick={cancelEdit} className="bg-primary-200 hover:bg-primary-300 text-primary-700 px-3 py-2 rounded-lg font-medium transition-colors">Avbryt</button>
                     </div>
                   </>
@@ -529,8 +534,8 @@
                     <span className="flex-1 font-medium text-primary-800">{s.name} <span className="text-primary-600 font-normal">({s.club})</span></span>
                     <span className="bg-primary-200 text-primary-800 px-3 py-1 rounded-full text-sm font-medium">{s.klass}</span>
                     <div className="flex gap-2">
-                      <button onClick={()=>startEdit(s)} disabled={!user} className={`bg-primary-100 hover:bg-primary-200 text-primary-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? [...]
-                      <button onClick={()=>removeShooter(s.id)} disabled={!user} className={`bg-red-100 hover:bg-red-200 text-red-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opac[...]
+                      <button onClick={()=>startEdit(s)} disabled={!user} className={`bg-primary-100 hover:bg-primary-200 text-primary-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor-not-allowed" : ""}`}>Ändra</button>
+                      <button onClick={()=>removeShooter(s.id)} disabled={!user} className={`bg-red-100 hover:bg-red-200 text-red-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor-not-allowed" : ""}`}>Ta bort</button>
                     </div>
                   </>
                 )}
@@ -597,7 +602,7 @@
           <div className="flex flex-col md:flex-row gap-4 mb-6">
             <div className="flex-1">
               <label className="block text-sm font-medium text-primary-700 mb-2">Tävling:</label>
-              <select value={competitionId} onChange={e => setCompetitionId(e.target.value)} className="border border-primary-300 p-3 rounded-lg w-full focus:ring-2 focus:ring-primary-500 focus:border[...]
+              <select value={competitionId} onChange={e => setCompetitionId(e.target.value)} className="border border-primary-300 p-3 rounded-lg w-full focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
                 <option value="">Välj tävling</option>
                 {competitions.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
               </select>
@@ -680,7 +685,7 @@
       React.useEffect(() => {
         if (competitions.length > 0 && !selectedCompetition)
           setSelectedCompetition(competitions[0].id);
-      }, [competitions]);
+      }, [competitions, selectedCompetition]);
 
       const selectedComp = competitions.find(c => c.id === selectedCompetition);
 
@@ -732,7 +737,7 @@
         doc.text("Resultatlista", 105, 20, { align: "center" });
         doc.setFontSize(13);
         doc.text(selectedComp?.name || "", 105, 28, { align: "center" });
-        
+
         let startY = 42;
         klassLista.forEach(klass => {
           if (!grouped[klass] || grouped[klass].length === 0) return;
@@ -828,7 +833,7 @@
                       grouped[klass].map((s, i) => (
                         <tr key={s.id} className="border-b border-primary-100 hover:bg-primary-50 transition-colors">
                           <td className="p-3 font-medium">
-                            {i + 1} 
+                            {i + 1}
                             {i === 0 && <span className="ml-2 text-amber-500">
                               <AwardIcon className="w-4 h-4 inline" />
                             </span>}
@@ -860,68 +865,54 @@
    // --- CupResults ---
     function CupResults({ shooters, scores, competitions }) {
       const klassLista = ["öppen", "dam", "veteran", "ungdom", "junior med stöd"];
-      
+
+      // Filtrera för att bara inkludera cuptävlingar och sortera dem
       const cupCompetitions = competitions
         .filter(c => c.includeInCup)
         .sort((a, b) => a.date.localeCompare(b.date));
       const cupCompetitionIds = cupCompetitions.map(c => c.id);
 
-      // Steg 1: Skapa en struktur för alla skyttars resultat per cuptävling
-      const resultsByClassAndComp = {};
+      // Steg 1: Placeringar per deltävling, per klass (endast för cuptävlingar)
+      const placementsPerCompetition = {};
       cupCompetitions.forEach(comp => {
-        resultsByClassAndComp[comp.id] = {};
-        klassLista.forEach(k => {
-          resultsByClassAndComp[comp.id][k] = [];
-        });
-
+        const shootersByClass = {};
+        klassLista.forEach(k => shootersByClass[k] = []);
         shooters.forEach(s => {
-          // Se till att klassen finns innan vi pushar
-          if (resultsByClassAndComp[comp.id][s.klass]) {
-             const shooterScores = scores.filter(sc => sc.shooterId === s.id && sc.competitionId === comp.id);
-             const total = shooterScores.reduce((sum, sc) => sum + (sc.total || 0), 0);
-             resultsByClassAndComp[comp.id][s.klass].push({ shooterId: s.id, total });
-          }
+          const shooterScores = scores.filter(sc => sc.shooterId === s.id && sc.competitionId === comp.id);
+          const total = shooterScores.reduce((sum, sc) => sum + (sc.total || 0), 0);
+          shootersByClass[s.klass].push({ shooterId: s.id, total });
         });
-
-        // Sortera och tilldela placering
+        placementsPerCompetition[comp.id] = {};
         klassLista.forEach(k => {
-          const participants = resultsByClassAndComp[comp.id][k].filter(r => r.total > 0);
-          participants.sort((a, b) => b.total - a.total);
-          
-          resultsByClassAndComp[comp.id][k] = resultsByClassAndComp[comp.id][k].map(res => {
-            const participantIndex = participants.findIndex(p => p.shooterId === res.shooterId);
-            if (participantIndex !== -1) {
-              return { ...res, placering: participantIndex + 1 };
-            }
-            return { ...res, placering: 1000 };
-          });
+          const arr = shootersByClass[k].filter(s => s.total > 0);
+          arr.sort((a, b) => b.total - a.total);
+          placementsPerCompetition[comp.id][k] = arr.map((s, i) => ({ ...s, placering: i + 1 }));
         });
       });
 
-      // Steg 2: Bygg den slutgiltiga grupperingen för rendering
+      // Steg 2: Bygg cupresultat per skytt
       const grouped = {};
       shooters.forEach(s => {
+        // Placering per cuptävling
         const placings = cupCompetitionIds.map(compId => {
-          const klassResultat = resultsByClassAndComp[compId]?.[s.klass] || [];
-          const shooterResult = klassResultat.find(r => r.shooterId === s.id);
-          return shooterResult?.placering || 1000;
+          const klassPlacings = placementsPerCompetition[compId]?.[s.klass] || [];
+          const p = klassPlacings.find(ss => ss.shooterId === s.id);
+          return p ? p.placering : 1000; // Använd 1000 för ej deltagit
         });
 
+        // Summera alla placeringar
         const sumPlacings = placings.reduce((a, b) => a + b, 0);
-        
+
         const skyttObj = {
           ...s,
           placings,
           sumPlacings
         };
-
-        if (!grouped[s.klass]) {
-          grouped[s.klass] = [];
-        }
+        if (!grouped[s.klass]) grouped[s.klass] = [];
         grouped[s.klass].push(skyttObj);
       });
 
-      // Sortera varje klass för sig
+      // Sortera skyttar per klass
       klassLista.forEach(k => {
         if (grouped[k]) {
           grouped[k].sort((a, b) => a.sumPlacings - b.sumPlacings);
@@ -976,7 +967,7 @@
         </section>
       );
     }
-    
+
     ReactDOM.render(<App />, document.getElementById('app'));
   </script>
 
