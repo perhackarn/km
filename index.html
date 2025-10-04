@@ -893,7 +893,7 @@
           return p ? p.placering : 1000; // Använd 1000 för ej deltagit
         });
 
-        // Summera alla placeringar (korrigerad logik)
+        // Summera alla placeringar, ignorera 1000
         const sumPlacings = placings.reduce((a, b) => a + (b === 1000 ? 0 : b), 0);
         
         const skyttObj = {
