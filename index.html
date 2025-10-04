@@ -289,107 +289,107 @@
     }
 
     // --- Competitions ---
-    function Competitions({ competitions, user }) {
-      const [name, setName] = React.useState("");
-      const [date, setDate] = React.useState("");
-      const [includeInCup, setIncludeInCup] = React.useState(true);
-      const [editId, setEditId] = React.useState(null);
-      const [editName, setEditName] = React.useState("");
-      const [editDate, setEditDate] = React.useState("");
-      const [editIncludeInCup, setEditIncludeInCup] = React.useState(false);
+   function Competitions({ competitions, user }) {
+  const [name, setName] = React.useState("");
+  const [date, setDate] = React.useState("");
+  const [includeInCup, setIncludeInCup] = React.useState(true);
+  const [editId, setEditId] = React.useState(null);
+  const [editName, setEditName] = React.useState("");
+  const [editDate, setEditDate] = React.useState("");
+  const [editIncludeInCup, setEditIncludeInCup] = React.useState(false);
 
-      const addCompetition = async () => {
-        if (!user) return alert("Du måste vara inloggad!");
-        if (!name || !date) return alert("Fyll i namn och datum!");
-        await addDoc(collection(db, "competitions"), { name, date, includeInCup });
-        setName(""); setDate(""); setIncludeInCup(true);
-      };
+  const addCompetition = async () => {
+    if (!user) return alert("Du måste vara inloggad!");
+    if (!name || !date) return alert("Fyll i namn och datum!");
+    await addDoc(collection(db, "competitions"), { name, date, includeInCup });
+    setName(""); setDate(""); setIncludeInCup(true);
+  };
 
-      const startEdit = (c) => {
-        setEditId(c.id);
-        setEditName(c.name);
-        setEditDate(c.date);
-        setEditIncludeInCup(c.includeInCup ?? false);
-      };
+  const startEdit = (c) => {
+    setEditId(c.id);
+    setEditName(c.name);
+    setEditDate(c.date);
+    setEditIncludeInCup(c.includeInCup ?? false);
+  };
 
-      const saveEdit = async () => {
-        if (!user) return alert("Du måste vara inloggad!");
-        if (!editName || !editDate) return alert("Fyll i namn och datum!");
-        await updateDoc(doc(db, "competitions", editId), { name: editName, date: editDate, includeInCup: editIncludeInCup });
-        setEditId(null); setEditName(""); setEditDate(""); setEditIncludeInCup(false);
-      };
+  const saveEdit = async () => {
+    if (!user) return alert("Du måste vara inloggad!");
+    if (!editName || !editDate) return alert("Fyll i namn och datum!");
+    await updateDoc(doc(db, "competitions", editId), { name: editName, date: editDate, includeInCup: editIncludeInCup });
+    setEditId(null); setEditName(""); setEditDate(""); setEditIncludeInCup(false);
+  };
 
-      const cancelEdit = () => {
-        setEditId(null); setEditName(""); setEditDate(""); setEditIncludeInCup(false);
-      };
+  const cancelEdit = () => {
+    setEditId(null); setEditName(""); setEditDate(""); setEditIncludeInCup(false);
+  };
 
-      const removeCompetition = async (id) => {
-        if (!user) return alert("Du måste vara inloggad!");
-        if (!window.confirm("Ta bort deltävlingen?")) return;
-        await deleteDoc(doc(db, "competitions", id));
-      };
+  const removeCompetition = async (id) => {
+    if (!user) return alert("Du måste vara inloggad!");
+    if (!window.confirm("Ta bort deltävlingen?")) return;
+    await deleteDoc(doc(db, "competitions", id));
+  };
 
-      return (
-        <section>
-          <h2 className="text-xl font-semibold mb-6 text-primary-800 flex items-center gap-3">
-            <CalendarIcon className="w-6 h-6" />
-            Deltävlingar
-          </h2>
-          <div className="flex flex-col md:flex-row gap-4 mb-6 items-end">
-            <div className="flex-1">
-              <label className="block text-sm font-medium text-primary-700 mb-1">Namn</label>
-              <input value={name} onChange={e=>setName(e.target.value)} placeholder="Namn på deltävling"
-                className="border border-primary-300 p-3 rounded-lg w-full focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-primary-700 mb-1">Datum</label>
-              <input type="date" value={date} onChange={e=>setDate(e.target.value)}
-                className="border border-primary-300 p-3 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors" />
-            </div>
-            <div className="flex items-center pb-3">
-              <input id="includeInCup" type="checkbox" checked={includeInCup} onChange={e => setIncludeInCup(e.target.checked)} className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-p[...]
-              <label htmlFor="includeInCup" className="ml-2 text-sm text-primary-800">Ingar i KM</label>
-            </div>
-            <button onClick={addCompetition}
-              className={`bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg font-medium transition-colors shadow-sm ${!user ? "opacity-50 cursor-not-allowed" : ""}`}
-              disabled={!user}>Lägg till</button>
-          </div>
-          {!user && <p className="text-red-600 text-sm mb-4 bg-red-50 p-3 rounded-lg border border-red-200">Logga in för att lägga till/ändra/tar bort deltävlingar.</p>}
-          <div className="space-y-1">
-            {competitions.map(c=>
-              <div key={c.id} className="py-4 px-4 bg-primary-50 rounded-lg border border-primary-200 flex flex-col md:flex-row md:items-center justify-between gap-3">
-                {editId === c.id ? (
-                  <>
-                    <input value={editName} onChange={e=>setEditName(e.target.value)} className="border border-primary-300 p-2 rounded-lg flex-1 mb-2 md:mb-0"/>
-                    <input type="date" value={editDate} onChange={e=>setEditDate(e.target.value)} className="border border-primary-300 p-2 rounded-lg flex-1 mb-2 md:mb-0"/>
-                    <div className="flex items-center">
-                      <input id={`editInclude-${c.id}`} type="checkbox" checked={editIncludeInCup} onChange={e => setEditIncludeInCup(e.target.checked)} className="h-4 w-4 rounded border-gray-300 text[...]
-                      <label htmlFor={`editInclude-${c.id}`} className="ml-2 text-sm text-primary-800">Ingar i KM</label>
-                    </div>
-                    <div className="flex gap-2">
-                      <button onClick={saveEdit} disabled={!user} className={`bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor[...]
-                      <button onClick={cancelEdit} className="bg-primary-200 hover:bg-primary-300 text-primary-700 px-3 py-2 rounded-lg font-medium transition-colors">Avbryt</button>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <span className="font-medium flex-1 text-primary-800">{c.name}</span>
-                    <span className="text-primary-600 flex-1">{c.date}</span>
-                    <span className={`text-sm font-medium px-2 py-1 rounded-full ${c.includeInCup ? 'bg-green-100 text-green-800' : 'bg-primary-100 text-primary-700'}`}>
-                      {c.includeInCup ? 'KM' : 'Ej KM'}
-                    </span>
-                    <div className="flex gap-2">
-                      <button onClick={()=>startEdit(c)} disabled={!user} className={`bg-primary-100 hover:bg-primary-200 text-primary-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? [...]
-                      <button onClick={()=>removeCompetition(c.id)} disabled={!user} className={`bg-red-100 hover:bg-red-200 text-red-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "[...]
-                    </div>
-                  </>
-                )}
-              </div>
+  return (
+    <section>
+      <h2 className="text-xl font-semibold mb-6 text-primary-800 flex items-center gap-3">
+        <CalendarIcon className="w-6 h-6" />
+        Deltävlingar
+      </h2>
+      <div className="flex flex-col md:flex-row gap-4 mb-6 items-end">
+        <div className="flex-1">
+          <label className="block text-sm font-medium text-primary-700 mb-1">Namn</label>
+          <input value={name} onChange={e => setName(e.target.value)} placeholder="Namn på deltävling"
+            className="border border-primary-300 p-3 rounded-lg w-full focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-primary-700 mb-1">Datum</label>
+          <input type="date" value={date} onChange={e => setDate(e.target.value)}
+            className="border border-primary-300 p-3 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors" />
+        </div>
+        <div className="flex items-center pb-3">
+          <input id="includeInCup" type="checkbox" checked={includeInCup} onChange={e => setIncludeInCup(e.target.checked)} className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500" />
+          <label htmlFor="includeInCup" className="ml-2 text-sm text-primary-800">Ingår i KM</label>
+        </div>
+        <button onClick={addCompetition}
+          className={`bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg font-medium transition-colors shadow-sm ${!user ? "opacity-50 cursor-not-allowed" : ""}`}
+          disabled={!user}>Lägg till</button>
+      </div>
+      {!user && <p className="text-red-600 text-sm mb-4 bg-red-50 p-3 rounded-lg border border-red-200">Logga in för att lägga till/ändra/tar bort deltävlingar.</p>}
+      <div className="space-y-1">
+        {competitions.map(c =>
+          <div key={c.id} className="py-4 px-4 bg-primary-50 rounded-lg border border-primary-200 flex flex-col md:flex-row md:items-center justify-between gap-3">
+            {editId === c.id ? (
+              <>
+                <input value={editName} onChange={e => setEditName(e.target.value)} className="border border-primary-300 p-2 rounded-lg flex-1 mb-2 md:mb-0" />
+                <input type="date" value={editDate} onChange={e => setEditDate(e.target.value)} className="border border-primary-300 p-2 rounded-lg flex-1 mb-2 md:mb-0" />
+                <div className="flex items-center">
+                  <input id={`editInclude-${c.id}`} type="checkbox" checked={editIncludeInCup} onChange={e => setEditIncludeInCup(e.target.checked)} className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500" />
+                  <label htmlFor={`editInclude-${c.id}`} className="ml-2 text-sm text-primary-800">Ingår i KM</label>
+                </div>
+                <div className="flex gap-2">
+                  <button onClick={saveEdit} disabled={!user} className={`bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor-not-allowed" : ""}`}>Spara</button>
+                  <button onClick={cancelEdit} className="bg-primary-200 hover:bg-primary-300 text-primary-700 px-3 py-2 rounded-lg font-medium transition-colors">Avbryt</button>
+                </div>
+              </>
+            ) : (
+              <>
+                <span className="font-medium flex-1 text-primary-800">{c.name}</span>
+                <span className="text-primary-600 flex-1">{c.date}</span>
+                <span className={`text-sm font-medium px-2 py-1 rounded-full ${c.includeInCup ? 'bg-green-100 text-green-800' : 'bg-primary-100 text-primary-700'}`}>
+                  {c.includeInCup ? 'KM' : 'Ej KM'}
+                </span>
+                <div className="flex gap-2">
+                  <button onClick={() => startEdit(c)} disabled={!user} className={`bg-primary-100 hover:bg-primary-200 text-primary-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor-not-allowed" : ""}`}>Ändra</button>
+                  <button onClick={() => removeCompetition(c.id)} disabled={!user} className={`bg-red-100 hover:bg-red-200 text-red-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor-not-allowed" : ""}`}>Ta bort</button>
+                </div>
+              </>
             )}
           </div>
-        </section>
-      );
-    }
+        )}
+      </div>
+    </section>
+  );
+}
 
     // --- Shooters ---
     function Shooters({ shooters, user }) {
