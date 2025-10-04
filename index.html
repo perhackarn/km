@@ -95,15 +95,8 @@
 
     // KORRIGERING 2: Ersatt med en platshållare. Dela aldrig din riktiga API-nyckel publikt.
     // Du bör byta ut denna mot din riktiga konfiguration och skydda den, t.ex. med Firebase App Check.
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_AUTH_DOMAIN",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_STORAGE_BUCKET",
-      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-      appId: "YOUR_APP_ID"
-    };
-
+    
+    const firebaseConfig = { apiKey: "AIzaSyB0C2ecPKLnbIMzWuj9LHcZa_fa9c47GzM", authDomain: "landbys-cup-2288f.firebaseapp.com", projectId: "landbys-cup-2288f", storageBucket: "landbys-cup-2288f.appspot.com", messagingSenderId: "39249767355", appId: "1:39249767355:web:80f585148357f89b53585c" };
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
