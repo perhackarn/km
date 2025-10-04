@@ -348,7 +348,7 @@
             </div>
             <div className="flex items-center pb-3">
               <input id="includeInCup" type="checkbox" checked={includeInCup} onChange={e => setIncludeInCup(e.target.checked)} className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-p[...]
-              <label htmlFor="includeInCup" className="ml-2 text-sm text-primary-800">Ingår i KM</label>
+              <label htmlFor="includeInCup" className="ml-2 text-sm text-primary-800">Ingar i KM</label>
             </div>
             <button onClick={addCompetition}
               className={`bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg font-medium transition-colors shadow-sm ${!user ? "opacity-50 cursor-not-allowed" : ""}`}
@@ -364,7 +364,7 @@
                     <input type="date" value={editDate} onChange={e=>setEditDate(e.target.value)} className="border border-primary-300 p-2 rounded-lg flex-1 mb-2 md:mb-0"/>
                     <div className="flex items-center">
                       <input id={`editInclude-${c.id}`} type="checkbox" checked={editIncludeInCup} onChange={e => setEditIncludeInCup(e.target.checked)} className="h-4 w-4 rounded border-gray-300 text[...]
-                      <label htmlFor={`editInclude-${c.id}`} className="ml-2 text-sm text-primary-800">Ingår i KM</label>
+                      <label htmlFor={`editInclude-${c.id}`} className="ml-2 text-sm text-primary-800">Ingar i KM</label>
                     </div>
                     <div className="flex gap-2">
                       <button onClick={saveEdit} disabled={!user} className={`bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor[...]
