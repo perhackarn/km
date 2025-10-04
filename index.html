@@ -893,9 +893,9 @@
           return p ? p.placering : 1000; // Använd 1000 för ej deltagit
         });
 
-        // Summera alla placeringar
+        // Summera alla placeringar (korrigerad logik)
         const sumPlacings = placings.reduce((a, b) => a + (b === 1000 ? 0 : b), 0);
-
+        
         const skyttObj = {
           ...s,
           placings,
@@ -973,7 +973,7 @@
 
       return (
         <section>
-          <div className="flex flex-wrap gap-4 items-center justify-between mb-6 bg-primary-50 p-4 rounded-lg border border-primary-200">
+          <div className="flex flex-wrap gap-4 items-center justify-between mb-6">
             <h2 className="text-xl font-semibold text-primary-800 flex items-center gap-3">
               <AwardIcon className="w-6 h-6" />
               KM Resultat
