@@ -875,7 +875,8 @@
         });
 
         shooters.forEach(s => {
-          if (s.klass === "öppen" || s.klass === "dam" || s.klass === "veteran" || s.klass === "ungdom" || s.klass === "junior med stöd") {
+          // Se till att klassen finns innan vi pushar
+          if (resultsByClassAndComp[comp.id][s.klass]) {
              const shooterScores = scores.filter(sc => sc.shooterId === s.id && sc.competitionId === comp.id);
              const total = shooterScores.reduce((sum, sc) => sum + (sc.total || 0), 0);
              resultsByClassAndComp[comp.id][s.klass].push({ shooterId: s.id, total });
