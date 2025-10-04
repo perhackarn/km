@@ -866,32 +866,44 @@
         .sort((a, b) => a.date.localeCompare(b.date));
       const cupCompetitionIds = cupCompetitions.map(c => c.id);
 
-      const placementsPerCompetition = {};
+      // Steg 1: Skapa en struktur för alla skyttars resultat per cuptävling
+      const resultsByClassAndComp = {};
       cupCompetitions.forEach(comp => {
-        const shootersByClass = {};
-        klassLista.forEach(k => shootersByClass[k] = []);
+        resultsByClassAndComp[comp.id] = {};
+        klassLista.forEach(k => {
+          resultsByClassAndComp[comp.id][k] = [];
+        });
+
         shooters.forEach(s => {
-          const shooterScores = scores.filter(sc => sc.shooterId === s.id && sc.competitionId === comp.id);
-          const total = shooterScores.reduce((sum, sc) => sum + (sc.total || 0), 0);
-          if (total > 0) {
-            shootersByClass[s.klass].push({ shooterId: s.id, total });
+          if (s.klass === "öppen" || s.klass === "dam" || s.klass === "veteran" || s.klass === "ungdom" || s.klass === "junior med stöd") {
+             const shooterScores = scores.filter(sc => sc.shooterId === s.id && sc.competitionId === comp.id);
+             const total = shooterScores.reduce((sum, sc) => sum + (sc.total || 0), 0);
+             resultsByClassAndComp[comp.id][s.klass].push({ shooterId: s.id, total });
           }
         });
-        
-        placementsPerCompetition[comp.id] = {};
+
+        // Sortera och tilldela placering
         klassLista.forEach(k => {
-          const arr = shootersByClass[k];
-          arr.sort((a, b) => b.total - a.total);
-          placementsPerCompetition[comp.id][k] = arr.map((s, i) => ({ ...s, placering: i + 1 }));
+          const participants = resultsByClassAndComp[comp.id][k].filter(r => r.total > 0);
+          participants.sort((a, b) => b.total - a.total);
+          
+          resultsByClassAndComp[comp.id][k] = resultsByClassAndComp[comp.id][k].map(res => {
+            const participantIndex = participants.findIndex(p => p.shooterId === res.shooterId);
+            if (participantIndex !== -1) {
+              return { ...res, placering: participantIndex + 1 };
+            }
+            return { ...res, placering: 1000 };
+          });
         });
       });
 
+      // Steg 2: Bygg den slutgiltiga grupperingen för rendering
       const grouped = {};
       shooters.forEach(s => {
         const placings = cupCompetitionIds.map(compId => {
-          const klassPlacings = placementsPerCompetition[compId]?.[s.klass] || [];
-          const p = klassPlacings.find(ss => ss.shooterId === s.id);
-          return p ? p.placering : 1000;
+          const klassResultat = resultsByClassAndComp[compId]?.[s.klass] || [];
+          const shooterResult = klassResultat.find(r => r.shooterId === s.id);
+          return shooterResult?.placering || 1000;
         });
 
         const sumPlacings = placings.reduce((a, b) => a + b, 0);
@@ -908,6 +920,7 @@
         grouped[s.klass].push(skyttObj);
       });
 
+      // Sortera varje klass för sig
       klassLista.forEach(k => {
         if (grouped[k]) {
           grouped[k].sort((a, b) => a.sumPlacings - b.sumPlacings);
