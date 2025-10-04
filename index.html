@@ -96,7 +96,7 @@
     // KORRIGERING 2: Ersatt med en platshållare. Dela aldrig din riktiga API-nyckel publikt.
     // Du bör byta ut denna mot din riktiga konfiguration och skydda den, t.ex. med Firebase App Check.
     
-    const firebaseConfig = { apiKey: "AIzaSyB0C2ecPKLnbIMzWuj9LHcZa_fa9c47GzM", authDomain: "landbys-cup-2288f.firebaseapp.com", projectId: "landbys-cup-2288f", storageBucket: "landbys-cup-2288f.appspot.com", messagingSenderId: "39249767355", appId: "1:39249767355:web:80f585148357f89b53585c" };
+    const firebaseConfig = { apiKey: "AIzaSyB0C2ecPKLnbIMzWuj9LHcZa_fa9c47GzM", authDomain: "landbys-cup-2288f.firebaseapp.com", projectId: "landbys-cup-2288f", storageBucket: "landbys-cup-2288f.appsp[...]
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
@@ -347,7 +347,7 @@
                 className="border border-primary-300 p-3 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors" />
             </div>
             <div className="flex items-center pb-3">
-              <input id="includeInCup" type="checkbox" checked={includeInCup} onChange={e => setIncludeInCup(e.target.checked)} className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-600" />
+              <input id="includeInCup" type="checkbox" checked={includeInCup} onChange={e => setIncludeInCup(e.target.checked)} className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-p[...]
               <label htmlFor="includeInCup" className="ml-2 text-sm text-primary-800">Ingår i KM</label>
             </div>
             <button onClick={addCompetition}
@@ -363,11 +363,11 @@
                     <input value={editName} onChange={e=>setEditName(e.target.value)} className="border border-primary-300 p-2 rounded-lg flex-1 mb-2 md:mb-0"/>
                     <input type="date" value={editDate} onChange={e=>setEditDate(e.target.value)} className="border border-primary-300 p-2 rounded-lg flex-1 mb-2 md:mb-0"/>
                     <div className="flex items-center">
-                      <input id={`editInclude-${c.id}`} type="checkbox" checked={editIncludeInCup} onChange={e => setEditIncludeInCup(e.target.checked)} className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-600" />
+                      <input id={`editInclude-${c.id}`} type="checkbox" checked={editIncludeInCup} onChange={e => setEditIncludeInCup(e.target.checked)} className="h-4 w-4 rounded border-gray-300 text[...]
                       <label htmlFor={`editInclude-${c.id}`} className="ml-2 text-sm text-primary-800">Ingår i KM</label>
                     </div>
                     <div className="flex gap-2">
-                      <button onClick={saveEdit} disabled={!user} className={`bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor-not-allowed" : ""}`}>Spara</button>
+                      <button onClick={saveEdit} disabled={!user} className={`bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor[...]
                       <button onClick={cancelEdit} className="bg-primary-200 hover:bg-primary-300 text-primary-700 px-3 py-2 rounded-lg font-medium transition-colors">Avbryt</button>
                     </div>
                   </>
@@ -379,8 +379,8 @@
                       {c.includeInCup ? 'KM' : 'Ej KM'}
                     </span>
                     <div className="flex gap-2">
-                      <button onClick={()=>startEdit(c)} disabled={!user} className={`bg-primary-100 hover:bg-primary-200 text-primary-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor-not-allowed" : ""}`}>Ändra</button>
-                      <button onClick={()=>removeCompetition(c.id)} disabled={!user} className={`bg-red-100 hover:bg-red-200 text-red-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor-not-allowed" : ""}`}>Ta bort</button>
+                      <button onClick={()=>startEdit(c)} disabled={!user} className={`bg-primary-100 hover:bg-primary-200 text-primary-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? [...]
+                      <button onClick={()=>removeCompetition(c.id)} disabled={!user} className={`bg-red-100 hover:bg-red-200 text-red-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "[...]
                     </div>
                   </>
                 )}
@@ -480,7 +480,7 @@
                 Namn: {confirmation.name}, Startnummer: {confirmation.startNumber}
               </span>
               <button onClick={() => setConfirmation(null)} className="absolute top-0 bottom-0 right-0 px-4 py-3">
-                <svg className="fill-current h-6 w-6 text-green-600" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+                <svg className="fill-current h-6 w-6 text-green-600" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.69[...]
               </button>
             </div>
           )}
@@ -489,7 +489,7 @@
               className="border border-primary-300 p-3 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"/>
             <input value={club} onChange={e=>setClub(e.target.value)} placeholder="Ort"
               className="border border-primary-300 p-3 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"/>
-            <select value={klass} onChange={e=>setKlass(e.target.value)} className="border border-primary-300 p-3 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors">
+            <select value={klass} onChange={e=>setKlass(e.target.value)} className="border border-primary-300 p-3 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-col[...]
               <option>öppen</option>
               <option>dam</option>
               <option>veteran</option>
@@ -517,7 +517,7 @@
                       <option>junior med stöd</option>
                     </select>
                     <div className="flex gap-2">
-                      <button onClick={saveEdit} disabled={!user} className={`bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor-not-allowed" : ""}`}>Spara</button>
+                      <button onClick={saveEdit} disabled={!user} className={`bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor[...]
                       <button onClick={cancelEdit} className="bg-primary-200 hover:bg-primary-300 text-primary-700 px-3 py-2 rounded-lg font-medium transition-colors">Avbryt</button>
                     </div>
                   </>
@@ -527,8 +527,8 @@
                     <span className="flex-1 font-medium text-primary-800">{s.name} <span className="text-primary-600 font-normal">({s.club})</span></span>
                     <span className="bg-primary-200 text-primary-800 px-3 py-1 rounded-full text-sm font-medium">{s.klass}</span>
                     <div className="flex gap-2">
-                      <button onClick={()=>startEdit(s)} disabled={!user} className={`bg-primary-100 hover:bg-primary-200 text-primary-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor-not-allowed" : ""}`}>Ändra</button>
-                      <button onClick={()=>removeShooter(s.id)} disabled={!user} className={`bg-red-100 hover:bg-red-200 text-red-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opacity-50 cursor-not-allowed" : ""}`}>Ta bort</button>
+                      <button onClick={()=>startEdit(s)} disabled={!user} className={`bg-primary-100 hover:bg-primary-200 text-primary-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? [...]
+                      <button onClick={()=>removeShooter(s.id)} disabled={!user} className={`bg-red-100 hover:bg-red-200 text-red-700 px-3 py-2 rounded-lg font-medium transition-colors ${!user ? "opac[...]
                     </div>
                   </>
                 )}
@@ -595,7 +595,7 @@
           <div className="flex flex-col md:flex-row gap-4 mb-6">
             <div className="flex-1">
               <label className="block text-sm font-medium text-primary-700 mb-2">Tävling:</label>
-              <select value={competitionId} onChange={e => setCompetitionId(e.target.value)} className="border border-primary-300 p-3 rounded-lg w-full focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+              <select value={competitionId} onChange={e => setCompetitionId(e.target.value)} className="border border-primary-300 p-3 rounded-lg w-full focus:ring-2 focus:ring-primary-500 focus:border[...]
                 <option value="">Välj tävling</option>
                 {competitions.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
               </select>
@@ -894,7 +894,7 @@
         });
 
         // Summera alla placeringar
-        const sumPlacings = placings.reduce((a, b) => a + b, 0);
+        const sumPlacings = placings.reduce((a, b) => a + (b === 1000 ? 0 : b), 0);
 
         const skyttObj = {
           ...s,
@@ -911,13 +911,75 @@
           grouped[k].sort((a, b) => a.sumPlacings - b.sumPlacings);
         }
       });
+      
+      const exportCupPDF = () => {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({
+          orientation: "portrait",
+          unit: "mm",
+          format: "a4"
+        });
+
+        doc.setFontSize(16);
+        doc.text("KM Resultat", 105, 20, { align: "center" });
+
+        let startY = 35;
+        klassLista.forEach(klass => {
+          if (!grouped[klass] || grouped[klass].length === 0) return;
+
+          const rows = [];
+          grouped[klass].forEach((s, i) => {
+            rows.push([
+              `${i + 1}`,
+              s.name,
+              s.club,
+              ...s.placings.map(p => p === 1000 ? "-" : String(p)),
+              String(s.sumPlacings)
+            ]);
+          });
+
+          const headers = [
+            ["Plats", "Skytt", "Ort", ...cupCompetitions.map(c => c.name), "Summa"]
+          ];
+
+          doc.autoTable({
+            startY,
+            head: headers,
+            body: rows,
+            theme: "grid",
+            styles: {
+              fontSize: 10,
+              cellPadding: 2,
+              halign: "left",
+              valign: "middle"
+            },
+            headStyles: {
+              fillColor: [71, 85, 105],
+              textColor: 255,
+              fontStyle: "bold"
+            },
+            alternateRowStyles: { fillColor: [248, 250, 252] },
+            margin: { left: 10, right: 10 },
+            didDrawPage: (data) => {
+              doc.setFontSize(13);
+              doc.text(klass, 10, data.settings.startY - 4);
+            }
+          });
+          startY = doc.lastAutoTable.finalY + 10;
+        });
+
+        doc.save(`km_resultat.pdf`);
+      };
 
       return (
         <section>
-          <h2 className="text-xl font-semibold mb-6 text-primary-800 flex items-center gap-3">
-            <AwardIcon className="w-6 h-6" />
-            KM Resultat
-          </h2>
+          <div className="flex flex-wrap gap-4 items-center justify-between mb-6 bg-primary-50 p-4 rounded-lg border border-primary-200">
+            <h2 className="text-xl font-semibold text-primary-800 flex items-center gap-3">
+              <AwardIcon className="w-6 h-6" />
+              KM Resultat
+            </h2>
+            <button onClick={exportCupPDF} className="bg-primary-700 hover:bg-primary-800 text-white px-4 py-2 rounded-lg font-medium shadow-sm transition-colors">Exportera som PDF</button>
+          </div>
           {klassLista.map(klass => (
             <div key={klass} className="mb-8">
               <h3 className="text-lg font-semibold mb-4 capitalize text-primary-800 bg-primary-100 px-3 py-2 rounded-lg">{klass}</h3>
