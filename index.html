@@ -861,13 +861,11 @@
     function CupResults({ shooters, scores, competitions }) {
       const klassLista = ["öppen", "dam", "veteran", "ungdom", "junior med stöd"];
       
-      // Filtrera för att bara inkludera cuptävlingar och sortera dem
       const cupCompetitions = competitions
         .filter(c => c.includeInCup)
         .sort((a, b) => a.date.localeCompare(b.date));
       const cupCompetitionIds = cupCompetitions.map(c => c.id);
 
-      // Steg 1: Placeringar per deltävling, per klass (endast för cuptävlingar)
       const placementsPerCompetition = {};
       cupCompetitions.forEach(comp => {
         const shootersByClass = {};
@@ -875,27 +873,27 @@
         shooters.forEach(s => {
           const shooterScores = scores.filter(sc => sc.shooterId === s.id && sc.competitionId === comp.id);
           const total = shooterScores.reduce((sum, sc) => sum + (sc.total || 0), 0);
-          shootersByClass[s.klass].push({ shooterId: s.id, total });
+          if (total > 0) {
+            shootersByClass[s.klass].push({ shooterId: s.id, total });
+          }
         });
+        
         placementsPerCompetition[comp.id] = {};
         klassLista.forEach(k => {
-          const arr = shootersByClass[k].filter(s => s.total > 0);
+          const arr = shootersByClass[k];
           arr.sort((a, b) => b.total - a.total);
           placementsPerCompetition[comp.id][k] = arr.map((s, i) => ({ ...s, placering: i + 1 }));
         });
       });
 
-      // Steg 2: Bygg cupresultat per skytt
       const grouped = {};
       shooters.forEach(s => {
-        // Placering per cuptävling
         const placings = cupCompetitionIds.map(compId => {
           const klassPlacings = placementsPerCompetition[compId]?.[s.klass] || [];
           const p = klassPlacings.find(ss => ss.shooterId === s.id);
-          return p ? p.placering : 1000; // Använd 1000 för ej deltagit
+          return p ? p.placering : 1000;
         });
 
-        // Summera alla placeringar
         const sumPlacings = placings.reduce((a, b) => a + b, 0);
         
         const skyttObj = {
@@ -903,11 +901,13 @@
           placings,
           sumPlacings
         };
-        if (!grouped[s.klass]) grouped[s.klass] = [];
+
+        if (!grouped[s.klass]) {
+          grouped[s.klass] = [];
+        }
         grouped[s.klass].push(skyttObj);
       });
 
-      // Sortera skyttar per klass
       klassLista.forEach(k => {
         if (grouped[k]) {
           grouped[k].sort((a, b) => a.sumPlacings - b.sumPlacings);
